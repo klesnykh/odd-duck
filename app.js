@@ -10,6 +10,7 @@ let comps = 0;
 let compsAllowed = 25;
 
 let allThings = [];
+let indexArray = [];
 
 function Thing(name) {
   this.name = name;
@@ -45,21 +46,30 @@ function randomThing () {
 }
 
 function renderThings(){
-  let thing1 = randomThing();
-  let thing2 = randomThing();
-  let thing3 = randomThing();
+  // ORIGINAL WHILE LOOP
+  // while (thing1 === thing2 || thing1 === thing3 || thing2 === thing3) {
+  //   if (thing1 === thing2){
+  //     thing2 = randomThing();
+  //   }
+  //   else if (thing1 === thing3){
+  //     thing3 = randomThing();
+  //   }
+  //   else if (thing2 === thing3){
+  //     thing3 = randomThing();
+  //   }
+  // }
 
-  while (thing1 === thing2 || thing1 === thing3 || thing2 === thing3) {
-    if (thing1 === thing2){
-      thing2 = randomThing();
-    }
-    else if (thing1 === thing3){
-      thing3 = randomThing();
-    }
-    else if (thing2 === thing3){
-      thing3 = randomThing();
+  //UPDATED/NICER WHILE LOOP
+  while (indexArray.length < 6) {
+    let ranNum = randomThing();
+    if (!indexArray.includes(ranNum)) {
+      indexArray.push(ranNum);
     }
   }
+
+  let thing1 = indexArray.shift();
+  let thing2 = indexArray.shift();
+  let thing3 = indexArray.shift();
 
   img1.src = allThings[thing1].src;
   img2.src = allThings[thing2].src;
@@ -81,6 +91,7 @@ function renderResults(){
     li.textContent = `${allThings[i].name} had ${allThings[i].views} views and ${allThings[i].likes} likes.`;
     results.appendChild(li);
   }
+  renderChart();
 }
 
 function handleThingClick(event){
@@ -102,3 +113,50 @@ function handleThingClick(event){
 
 renderThings();
 myContainer.addEventListener('click', handleThingClick);
+
+function renderChart(){
+  let thingLikes = [];
+  let thingNames = [];
+  let thingViews = [];
+
+  for (let i=0; i<allThings.length; i++){
+    thingLikes.push(allThings[i].likes);
+    thingNames.push(allThings[i].name);
+    thingViews.push(allThings[i].views);
+  }
+
+  let ctx = document.getElementById('myChart');
+  //let ctx = document.createElement('canvas');
+  //myChart.appendChild(ctx);
+
+  let config = {
+    type: 'bar',
+    data: {
+      labels: thingNames,
+      datasets: [
+        {
+          label: '# of Likes',
+          data: thingLikes,
+          borderWidth: 1,
+          backgroundColor: '#FF2D00',
+        },
+        {
+          label: '# of Views',
+          data: thingViews,
+          borderWidth: 1,
+          backgroundColor: '#0008FF',
+        }
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  }
+  
+  new Chart(ctx, config);
+  
+}
