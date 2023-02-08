@@ -12,6 +12,7 @@ let compsAllowed = 25;
 let allThings = [];
 let indexArray = [];
 
+
 function Thing(name) {
   this.name = name;
   this.src = `img/${name}.jpeg`;
@@ -19,46 +20,39 @@ function Thing(name) {
   this.likes = 0;
 }
 
-let bag = new Thing('bag');
-let banana = new Thing('banana');
-let bathroom = new Thing('bathroom');
-let boots = new Thing('boots');
-let breakfast = new Thing('breakfast');
-let bubblegum = new Thing('bubblegum');
-let chair = new Thing('chair');
-let cthulhu = new Thing('cthulhu');
-let dogDuck = new Thing('dog-duck');
-let dragon = new Thing('dragon');
-let pen = new Thing('pen');
-let petSweep = new Thing('pet-sweep');
-let scissors = new Thing('scissors');
-let shark = new Thing('shark');
-let sweep = new Thing('sweep');
-let tauntaun = new Thing('tauntaun');
-let unicorn = new Thing('unicorn');
-let waterCan = new Thing('water-can');
-let wineGlass = new Thing('wine-glass');
 
-allThings = [bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, waterCan, wineGlass];
+if(!localStorage.getItem('allThingsLocalStorage')){
+  let bag = new Thing('bag');
+  let banana = new Thing('banana');
+  let bathroom = new Thing('bathroom');
+  let boots = new Thing('boots');
+  let breakfast = new Thing('breakfast');
+  let bubblegum = new Thing('bubblegum');
+  let chair = new Thing('chair');
+  let cthulhu = new Thing('cthulhu');
+  let dogDuck = new Thing('dog-duck');
+  let dragon = new Thing('dragon');
+  let pen = new Thing('pen');
+  let petSweep = new Thing('pet-sweep');
+  let scissors = new Thing('scissors');
+  let shark = new Thing('shark');
+  let sweep = new Thing('sweep');
+  let tauntaun = new Thing('tauntaun');
+  let unicorn = new Thing('unicorn');
+  let waterCan = new Thing('water-can');
+  let wineGlass = new Thing('wine-glass');
+
+  allThings = [bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, waterCan, wineGlass];
+}
+else {
+  allThings = JSON.parse(localStorage.getItem('allThingsLocalStorage'));
+}
 
 function randomThing () {
   return Math.floor(Math.random() * allThings.length);
 }
 
 function renderThings(){
-  // ORIGINAL WHILE LOOP
-  // while (thing1 === thing2 || thing1 === thing3 || thing2 === thing3) {
-  //   if (thing1 === thing2){
-  //     thing2 = randomThing();
-  //   }
-  //   else if (thing1 === thing3){
-  //     thing3 = randomThing();
-  //   }
-  //   else if (thing2 === thing3){
-  //     thing3 = randomThing();
-  //   }
-  // }
-
   //UPDATED/NICER WHILE LOOP
   while (indexArray.length < 6) {
     let ranNum = randomThing();
@@ -91,6 +85,10 @@ function renderResults(){
     li.textContent = `${allThings[i].name} had ${allThings[i].views} views and ${allThings[i].likes} likes.`;
     results.appendChild(li);
   }
+
+  //pack allThings and leave in storage
+  localStorage.setItem('allThingsLocalStorage', JSON.stringify(allThings));
+
   renderChart();
 }
 
