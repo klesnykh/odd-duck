@@ -88,7 +88,7 @@ function renderResults(){
 
   //pack allThings and leave in storage
   localStorage.setItem('allThingsLocalStorage', JSON.stringify(allThings));
-
+  myButton.removeEventListener('click', renderResults);
   renderChart();
 }
 
